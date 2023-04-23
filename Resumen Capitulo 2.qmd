@@ -1,0 +1,675 @@
+---
+title: "Resumen Capitulo 2"
+author: "Alex_Guaman_Evelyn_Faican"
+format: pdf
+editor: visual
+---
+
+# **Capitulo 2**
+
+## **Estructuras de datos R**
+
+Las estructuras de datos de R que se utilizan con mayor frecuencia en el aprendizaje automático son vectores, factores, listas, matrices y marcos de datos. Cada uno de estos tipos de datos está especializado para una tarea de administración de datos específica, por lo que es importante comprender cómo interactuarán en su proyecto de R.
+
+## **Vectores**
+
+La estructura de datos fundamental de R es la vector, que almacena un conjunto ordenado de valores llamado elementos. Un vector puede contener cualquier número de elementos.
+
+Construyamos un conjunto de vectores que contengan datos sobre tres pacientes médicos.\
+Crearemos un vector de caracteres llamadonombre del tema,que contiene los tres nombres de pacientes, un vector numérico llamadotemperaturaque contiene la temperatura corporal de cada paciente y un vector lógicoestado_gripeque contiene el diagnóstico de cada paciente; VERDADEROsi él o ella tiene influenza,FALSOde lo contrario. Como se muestra en el siguiente listado, los tres vectores son:
+
+```{r}
+nombre_sujeto <- c("John Doe", "Jane Doe", "Steve Graves")
+temperatura <- c(98.1, 98.6, 101.4)
+estado_gripe <- c(FALSO, FALSO, VERDADERO)
+```
+
+Debido a que los vectores R están inherentemente ordenados, se puede acceder a los registros contando el número del elemento en el conjunto, comenzando en1,y rodear este número con corchetes (por ejemplo, \[ y \]) después del nombre del vector. Por ejemplo, para obtener la temperatura corporal de la paciente Jane Doe, o el elemento 2 en el vector de temperatura, simplemente escriba:
+
+```{r}
+ temperatura[2]
+```
+
+R ofrece una variedad de métodos convenientes para extraer datos de vectores. Se puede obtener un rango de valores utilizando el operador de dos puntos. Por ejemplo, para obtener la temperatura corporal de Jane Doe y Steve Graves, escriba:
+
+```{r}
+ temperatura[2:3]
+```
+
+Los artículos se pueden excluir especificando un número de artículo negativo. Para excluir los datos de temperatura de Jane Doe, escriba:
+
+```{r}
+ temperatura[-2]
+```
+
+Finalmente, a veces también es útil especificar un vector lógico que indique si se debe incluir cada elemento. Por ejemplo, para incluir las dos primeras lecturas de temperatura pero excluir la tercera, escriba:
+
+```{r}
+temperatura[1:2]
+```
+
+Como verá en breve, el vector proporciona la base para muchas otras estructuras de datos\
+R. Por lo tanto, conocer las diversas operaciones vectoriales es crucial para trabajar con\
+datos en R.
+
+## **Factores**
+
+R proporciona una estructura de datos conocida comofactor específicamente para este propósito. Un factor es un caso especial de vector que se utiliza únicamente para representar variables nominales. En el conjunto de datos médicos que estamos construyendo, podríamos usar un factor para representargénero,porque utiliza dos categorías:MASCULINO y FEMENINO.
+
+Para crear un factor a partir de unpersonajevector, simplemente aplique el factor()función. Por ejemplo:
+
+```{r}
+sexo <- factor(c("MASCULINO", "MUJER", "MASCULINO"))
+género
+```
+
+Observe que cuando se mostraban los datos de género, R imprimía información adicional que indicaba los niveles del factor de género. Los niveles comprenden el conjunto de posibles categorías que podrían tomar los datos, en este casoMASCULINOoFEMENINO.\
+Cuando se crean factores, podemos agregar niveles adicionales que pueden no aparecer en los datos. Supongamos que agregamos otro factor para el tipo de sangre como se muestra en el siguiente ejemplo:
+
+```{r}
+ sangre <- factor(c("O", "AB", "A"),
+niveles = c("A", "B", "AB", "O"))
+  sangre
+```
+
+Como resultado, aunque nuestros datos incluyen solo tiposO, AB,y A,los cuatro tipos se almacenan con el sangre factor indicado por la salida Niveles: AB AB O. El almacenamiento del nivel adicional permite la posibilidad de agregar datos con el otro tipo de sangre en el futuro. También asegura que si tuviéramos que crear una tabla de tipos de sangre, sabríamos ese tipo B existe, a pesar de no estar registrado en nuestros datos.
+
+## **Liza**
+
+Se usa para almacenar un conjunto ordenado de valores. Sin embargo, a diferencia de un vector que requiere que todos los elementos sean del mismo tipo, una lista permite recopilar diferentes tipos de valores. Debido a esta flexibilidad, las listas a menudo se usan para almacenar varios tipos de datos de entrada y salida y conjuntos de parámetros de configuración para modelos de aprendizaje automático.
+
+```{r}
+sujeto_nombre[1]
+```
+
+```{r}
+temperatura[1]
+```
+
+```{r}
+estado_gripe[1]
+```
+
+```{r}
+género[1]
+```
+
+```{r}
+sangre[1]
+```
+
+Esto parece mucho trabajo para mostrar los datos médicos de un paciente. La estructura de la lista nos permite agrupar todos los datos de un paciente en un objeto que podemos usar repetidamente.
+
+Para cada valor en la secuencia de elementos. Los nombres no son obligatorios, pero permiten acceder a los valores de la lista más adelante por nombre, en lugar de por la posición numerada como con los vectores:
+
+```{r}
+asunto1 <- lista(nombre completo = nombre_sujeto[1],
+temperatura = temperatura[1],
+flu_status = flu_status[1], género =
+género[1],
+sangre = sangre[1])
+```
+
+Imprimir los datos de un paciente ahora es cuestión de escribir un solo comando:
+
+```{r}
+ sujeto1
+```
+
+Tenga en cuenta que los valores están etiquetados con los nombres que especificamos en el\
+comando anterior. Aunque se puede acceder a una lista usando los mismos métodos que un\
+vector, los nombres brindan mayor claridad para acceder a los valores, en lugar de tener que recordar la posición del valor de temperatura, así:
+
+```{r}
+ sujeto1[2]
+```
+
+A menudo es más fácil acceder a la temperatura directamente, agregando un \$ y el nombre\
+del valor al nombre de la lista:
+
+```{r}
+sujeto1$temperatura
+```
+
+Acceder al valor por nombre también garantiza que si agrega o elimina valores de la lista, no recuperará accidentalmente el elemento de lista incorrecto cuando cambie el orden.\
+Es posible obtener varios elementos en una lista especificando un vector de nombres:
+
+```{r}
+ sujeto1[c("temperatura", "estado_gripe")]
+```
+
+## Marcos de datos
+
+Con mucho, la estructura de datos R más importante utilizada en el aprendizaje automático es lamarco de datos, una estructura análoga a una hoja de cálculo o base de datos ya que tiene filas y columnas de datos. En términos de R, un marco de datos puede entenderse como una lista de vectores o factores, cada uno de los cuales tiene exactamente el mismo número de valores. Debido a que el marco de datos es literalmente una lista de vectores, combina aspectos de vectores y listas. Vamos a crear un marco de datos para nuestro conjunto de datos de pacientes. Usando los vectores de datos de pacientes que creamos previamente, el marco de datos()la función los combina en un marco de datos:
+
+```{r}
+pt_data <- data.frame(subject_name, temperatura, flu_status, gender, blood,
+stringsAsFactors = FALSE)
+```
+
+Cuando mostramos lapt_datosmarco de datos, vemos que la estructura es bastante diferente de las estructuras de datos con las que trabajamos anteriormente:
+
+```{r}
+pt_datos
+```
+
+Para extraer columnas enteras (vectores) de datos, podemos aprovechar el hecho de que un marco de datos es simplemente una lista de vectores. De manera similar a las listas, la forma más directa de extraer un solo elemento, en este caso un vector o columna de datos, es referirse a él por su nombre. Por ejemplo, para obtener lanombre del tema vectorial, tipo:
+
+```{r}
+ pt_datos$nombre_sujeto
+```
+
+También similar a las listas, se puede usar un vector de nombres para extraer varias columnas de un marco de datos:
+
+```{r}
+ pt_data[c("temperatura", "flu_status")]
+```
+
+Para extraer valores en el marco de datos, podemos usar métodos como los que aprendimos\
+para acceder a valores en vectores, con una excepción importante; debido a que el marco de datos es bidimensional, deberá especificar la posición de las filas y las columnas que desea extraer.
+
+Por ejemplo, para extraer el valor de la primera fila y la segunda columna del marco de\
+datos del paciente (el valor de temperatura para John Doe), ingresaría:
+
+```{r}
+pt_datos[1, 2]
+```
+
+Si desea más de una fila o columna de datos, puede hacerlo especificando\
+vectores para los números de fila y columna que desea. La siguiente declaración\
+extraerá datos de las filas 1 y 3, y de las columnas 2 y 4:
+
+```{r}
+pt_data[c(1, 3), c(2, 4)]
+```
+
+Para extraer todas las filas o columnas, en lugar de enumerarlas todas, simplemente deje en blanco la parte de la fila o la columna. Por ejemplo, para extraer todas las filas de la primera columna:
+
+```{r}
+datos_pt[, 1]
+```
+
+Para extraer todas las columnas de la primera fila:
+
+```{r}
+pt_datos[1, ]
+```
+
+Y para extraer todo:
+
+```{r}
+datos_pt[ , ]
+```
+
+Los métodos que hemos aprendido para acceder a valores en listas y vectores también se pueden usar para recuperar filas y columnas de marcos de datos. Por ejemplo, se puede acceder a las columnas por nombre en lugar de por posición, y se pueden usar signos negativos para excluir filas o columnas de datos. Por lo tanto, la declaración:
+
+```{r}
+ pt_data[c(1, 3), c("temperatura", "género")]
+```
+
+Es equivalente a:
+
+```{r}
+pt_datos[-2, c(-1, -3, -5)]
+```
+
+Para familiarizarse con el trabajo con marcos de datos, intente practicar estas operaciones con los datos del paciente o, mejor aún, utilice su propio conjunto de datos. Estos tipos de operaciones son cruciales para gran parte del trabajo que haremos en capítulos posteriores.
+
+## Matrices y arreglos
+
+Para crear una matriz, simplemente suministre un vector de datos almatriz()función, junto con un parámetro que especifica el número de filas (fila)o número de columnas (ncol). Por ejemplo, para crear una matriz de 2x2 que almacene las primeras cuatro letras del alfabeto, podemos usar el nrow parámetro para solicitar que los datos se dividan en dos filas:
+
+```{r}
+m <- matriz(c('a', 'b', 'c', 'd'), nfila = 2)
+```
+
+Esto es equivalente a la matriz producida usandon col = 2:
+
+```{r}
+m <- matriz(c('a', 'b', 'c', 'd'), ncol = 2)
+```
+
+Se llama orden de columna principal. Para ilustrar esto aún más, veamos qué\
+sucede si agregamos algunos valores más a la matriz. Con seis valores, solicitar dos filas crea una matriz con tres columnas:
+
+```{r}
+ m <- matriz(c('a', 'b', 'c', 'd', 'e', 'f'), nfila = 2)
+```
+
+De manera similar, solicitar dos columnas crea una matriz con tres filas:
+
+```{r}
+ m <- matriz(c('a', 'b', 'c', 'd', 'e', 'f'), ncol = 2)
+```
+
+Al igual que con los marcos de datos, los valores en las matrices se pueden extraer usando \[fila columna\] notación.
+
+```{r}
+m[1, ]
+```
+
+```{r}
+m[, 1]
+```
+
+## Gestión de datos con R
+
+Uno de los desafíos que se enfrentan cuando se trabaja con conjuntos de datos masivos consiste en recopilar, preparar y administrar datos de una variedad de fuentes. Esta tarea se ve facilitada por las herramientas de R para cargar datos de muchos formatos comunes.
+
+## Guardar y cargar estructuras de datos R
+
+Cuando haya pasado mucho tiempo obteniendo un marco de datos en particular en el formato que desea, no debería necesitar volver a crear su trabajo cada vez que reinicia su sesión de R. Para guardar una estructura de datos en particular en un archivo que pueda volver a cargarse más tarde o transferirse a otro sistema, puede usar elahorrar()función.
+
+Si tuviéramos tres objetos llamadosx, y,yz,podríamos guardarlos en un archivo mis datos. RData usando el siguiente comando:
+
+```{r}
+ guardar(x, y, z, archivo = "misdatos.RData")
+```
+
+El carga()El comando recreará las estructuras de datos ya guardadas que estaban en un archivo . RDataarchivo. para cargar elmisdatos.RDataarchivo que guardamos en el código anterior, simplemente escriba:
+
+```{r}
+ cargar("misdatos.RData")
+```
+
+## Importar y guardar datos de archivos CSV
+
+A tabular(como en "tabla") el archivo de datos está estructurado en forma de matriz, de tal manera que cada línea de texto refleja un ejemplo, y cada ejemplo tiene el mismo número de características. Los valores de características en cada línea están separados por un símbolo predefinido conocido como delimitador. A menudo, la primera línea de un archivo de datos tabulares enumera los nombres de las columnas de datos. Esto se llama un en cabezamiento línea.
+
+```{r}
+ pt_data <- read.csv("pt_data.csv", stringsAsFactors = FALSO)
+```
+
+De manera predeterminada, R asume que el archivo CSV incluye una línea de encabezado que enumera los nombres de las características en el conjunto de datos. Si un archivo CSV no tiene encabezado, especifique la opción encabezado = FALSOcomo se muestra en el siguiente comando, y R asignará nombres de características predeterminados en la formaV1, V2,etcétera:
+
+```{r}
+ misdatos <- read.csv("misdatos.csv", stringsAsFactors = FALSE, header =
+FALSE)
+```
+
+Para guardar un marco de datos en un archivo CSV, use el método write.CSV ()función. Si su marco de datos se llamapt_datos,simplemente ingrese:
+
+```{r}
+ escribir.csv(pt_datos, archivo = "pt_datos.csv")
+```
+
+## Importación de datos de bases de datos SQL
+
+Si sus datos se almacenan en unODBC(Conectividad de base de datos abierta)sql(lenguaje de consulta estructurado) base de datos como Oracle, MySQL, PostgreSQL, Microsoft SQL o SQLite, la RODBCpaquete creado por Brian Ripleyse puede utilizar para importar estos datos directamente en un marco de datos R.
+
+Si aún no lo ha hecho, deberá instalar y cargar elRODBCpaquete:
+
+```{r}
+ instalar.paquetes("RODBC")
+```
+
+```{r}
+ biblioteca (RODBC)
+```
+
+A continuación, abriremos una conexión llamadamidba la base de datos con el DSNmi_dsn:
+
+```{r}
+ mydb <- odbcConnect("my_dsn")
+```
+
+Alternativamente, si su conexión ODBC requiere un nombre de usuario y una\
+contraseña, deben especificarse al llamar alodbcConnect()función:
+
+```{r}
+ mydb <- odbcConnect("my_dsn", uid = "my_username" pwd =
+"my_password")
+```
+
+ElsqlQuery()La función utiliza consultas SQL típicas, como se muestra en el siguiente\
+comando:
+
+```{r}
+ consulta_paciente <- "seleccionar * de datos_paciente donde vivo = 1"
+```
+
+```{r}
+ datos_paciente <- sqlQuery(canal = mydb, consulta = consulta_paciente,
+stringsAsFactors = FALSO)
+```
+
+La resultantedatos_pacientevariable será un marco de datos que contiene todas las filas seleccionadas mediante la consulta SQL almacenada enpaciente_consulta.\
+Cuando haya terminado de usar la base de datos, la conexión se puede cerrar como se muestra en el siguiente comando:
+
+```{r}
+odbcClose(mydb)
+```
+
+## Exploración y comprensión de datos.
+
+Después de recopilar datos y cargarlos en estructuras de datos R, el siguiente paso en el proceso de aprendizaje automático consiste en examinar los datos en detalle. Es durante este paso que comenzará a explorar las características y los ejemplos de los datos, y se dará cuenta de las peculiaridades que hacen que sus datos sean únicos. Cuanto mejor comprenda sus datos, mejor podrá hacer coincidir un modelo de aprendizaje automático con su problema de aprendizaje.
+
+Dado que el conjunto de datos se almacena en formato CSV, podemos usar elleer.csv()función para cargar los datos en un marco de datos R:
+
+```{r}
+autosusados <- read.csv("autosusados.csv", stringsAsFactors = FALSE)
+```
+
+## Explorando la estructura de los datos.
+
+Su investigación debe ser sobre cómo se organizan los datos. Si tiene suerte, su fuente le proporcionará unaDiccionario de datos, un documento que describe las características de los datos. En nuestro caso, los datos del coche usado no vienen con esta documentación, por lo que tendremos que crear la nuestra.\
+El cadena () La función proporciona un método para mostrar la estructura de un marco de datos, o cualquier estructura de datos R, incluidos vectores y listas. Se puede utilizar para crear el esquema básico de nuestro diccionario de datos:
+
+```{r}
+ str(autosusados)
+```
+
+Después del nombre de la variable, elchrnos dice que la característica es de tipo carácter. En este conjunto de datos, tres de las variables son de carácter, mientras que tres se indican como en t, que indica tipo entero.
+
+Aunque nuestros datos parecen haber recibido nombres de variables significativos, no siempre es así. A veces, los conjuntos de datos tienen características con nombres sin sentido, códigos o simplemente un número comoV1.Puede ser necesario realizar investigaciones adicionales para determinar qué representa realmente una característica.
+
+## Explorando variables numéricas
+
+Para investigar las variables numéricas en los datos de autos usados, emplearemos un\
+conjunto de medidas de uso común para describir valores conocidos comoresumen\
+estadístico. Elresumen()La función muestra varias estadísticas resumidas comunes. Echemos un vistazo a una sola característica,año:
+
+```{r}
+resumen(automóvilesusados$año)
+```
+
+También podemos usar elresumen()función para obtener estadísticas de resumen para varias variables numéricas al mismo tiempo:
+
+```{r}
+ resumen(autosusados[c("precio", "kilometraje")])
+```
+
+Las seis estadísticas resumidas queresumen()La función proporciona herramientas simples pero poderosas para investigar datos. Las estadísticas de resumen se pueden dividir en dos tipos: medidas de centro y medidas de dispersión.
+
+## Medición de la tendencia central: media y mediana
+
+En el uso común, cuando algo se considera promedio,\
+cae en algún lugar entre los extremos de la escala. Un estudiante promedio puede tener calificaciones que caen en medio de sus compañeros de clase; un peso medio no es inusualmente ligero ni pesado. Un elemento promedio es típico y no muy diferente de los demás en el grupo. Puede pensar en él como un ejemplo por el cual todos los demás son juzgados.\
+En estadística, el promedio también se conoce comosignificar, una medida definida como la\
+suma de todos los valores dividida por el número de valores. Por ejemplo, para calcular el\
+ingreso medio en un grupo de tres personas con ingresos de \$35 000, \$45 000 y \$55 000,\
+podríamos escribir:
+
+```{r}
+ (36000 + 44000 + 56000) / 3
+```
+
+R también proporciona unasignificar()función, que calcula la media de un vector de números:
+
+```{r}
+media(c(36000, 44000, 56000))
+```
+
+Aunque la media es, con mucho, la estadística más comúnmente citada para medir el centro de un\
+conjunto de datos, no siempre es la más adecuada. Otra medida de tendencia central de uso común es lamediana, que es el valor que aparece en la mitad de una lista ordenada de valores. Al igual que con la media, R proporciona unamediana()función, que podemos aplicar a nuestros datos salariales como se muestra en el siguiente ejemplo:
+
+```{r}
+mediana(c(36000, 44000, 56000))
+```
+
+## Medición de la dispersión: cuartiles y el resumen de cinco números
+
+Para medir la diversidad, necesitamos emplear otro tipo de estadísticas resumidas que\
+se ocupan de ladesparramarde los datos, o qué tan apretado o suelto están espaciados los\
+valores. Conocer la dispersión proporciona una idea de los máximos y mínimos de los datos, y si la mayoría de los valores son similares o diferentes a la media y la mediana.\
+Elresumen de cinco numeroses un conjunto de cinco estadísticas que representan aproximadamente la dispersión de un conjunto de datos. Las cinco estadísticas se incluyen en el resultado delresumen() función. Escritos en orden, son:
+
+1.  Mínimo (mín.)
+2.  Primer cuartil, o Q1 (1er cu.)
+3.  Mediana, o Q2 (Mediana)
+4.  Tercer cuartil, o Q3 (3er qu.)
+5.  Máximo (máx.)
+
+El lapso entre el valor mínimo y máximo se conoce comorango. En R, elrango()La\
+función devuelve tanto el valor mínimo como el máximo. Combinatorio\
+rango()con la función diferencia,diferencia()le permite examinar el rango de datos\
+con un solo comando:
+
+```{r}
+ rango(cochesusados $precio)
+```
+
+```{r}
+ diff(rango(cochesusados$precio))
+```
+
+Los cuartiles primero y tercero, Q1 y Q3, se refieren al valor por debajo o por encima del cual se encuentra una cuarta parte de los valores. Junto con la mediana (Q2), los cuartiles dividen un conjunto de datos en cuatro partes, cada una con el mismo número de valores.
+
+El 50 por ciento medio de los datos entre Q1 y Q3 es de particular interés porque en sí\
+mismo es una medida simple de dispersión. La diferencia entre Q1 y Q3 se conoce\
+comorango intercuartil(IQR), y se puede calcular con laRQI()función:
+
+```{r}
+ IQR(cochesusados $precio)
+```
+
+Elcuantil()proporciona una herramienta robusta para identificar cuantiles para un conjunto de valores. Por defecto, elcuantil()La función devuelve el resumen de cinco números. La aplicación de la función a los datos de automóviles usados da como resultado las mismas estadísticas que antes:
+
+```{r}
+ cuantil(autosusados$precio) 0%
+```
+
+Si especificamos un adicionalproblemasparámetro usando un vector que denota puntos de corte, podemos obtener cuantiles arbitrarios, como los percentiles 1 y 99:
+
+```{r}
+ cuantil(cochesusados $precio, probs = c(0.01, 0.99)) 1%
+```
+
+La función de secuenciasecuencia()se utiliza para generar vectores de valores espaciados uniformemente.\
+Esto facilita la obtención de otros segmentos de datos, como los quintiles (cinco grupos), como se muestra en el siguiente comando:
+
+```{r}
+ cuantil(autosusados$precio, seq(de = 0, a = 1, por = 0.20))
+```
+
+La propagación de lakilometrajeLa variable también exhibe otra propiedad interesante: la\
+diferencia entre Q3 y el máximo es mucho mayor que la que existe entre el mínimo y Q1. En\
+otras palabras, los valores más grandes están mucho más dispersos que los valores más\
+pequeños.\
+Este hallazgo explica por qué el valor medio es mucho mayor que la mediana. Debido a que la media es sensible a los valores extremos, se eleva, mientras que la mediana permanece\
+relativamente en el mismo lugar. Esta es una propiedad importante, que se vuelve más evidente cuando los datos se presentan visualmente.
+
+## Visualización de variables numéricas: diagramas de caja
+
+La visualización de variables numéricas puede ser útil para diagnosticar muchos problemas con los datos. Una visualización común del resumen de cinco números es unadiagrama de cajao caja y bigotestrama. El gráfico de caja muestra el centro y la dispersión de una variable numérica en un formato que le permite obtener rápidamente una idea del rango y el sesgo de una variable, o compararla con otras variables.
+
+```{r}
+ boxplot(usedcars$price, main="Boxplot de Precios de Autos Usados",
+ylab="Precio ($)")
+```
+
+```{r}
+ boxplot(usedcars$mileage, main="Boxplot of Used Car Millage",
+ylab="Odometer (mi.)")
+```
+
+R producirá cifras de la siguiente manera:
+
+El diagrama de caja y patillas representa los valores de resumen de cinco números usando líneas horizontales. Las líneas horizontales que forman el cuadro en el medio de cada figura\
+representan Q1, Q2 (la mediana) y Q3 cuando se lee el gráfico de abajo hacia arriba. La mediana está indicada por la línea oscura, que se alinea con \$13,592 en el eje vertical paraprecioy 36,385 millas. en el eje vertical parakilometraje.
+
+## Visualización de variables numéricas -- histogramas
+
+Podemos crear un histograma para el auto usado.precioykilometrajedatos usando elhist()\
+función. Como habíamos hecho con el diagrama de caja, especificaremos un título para la figura usando elprincipalparámetro y etiquete el eje x con elxlabparámetro. Los comandos para crear los histogramas son:
+
+```{r}
+ hist(autosusados$precio, main = "Histograma de Precios de Autos Usados",
+xlab = "Precio ($)")
+```
+
+```{r}
+ hist(automóvilesusados$kilometraje, main = "Histograma de Kilometraje de Automóviles
+Usados", xlab = "Odómetro (mi.)")
+```
+
+## Comprensión de datos numéricos: distribuciones uniformes y normales
+
+Los histogramas, los diagramas de caja y las estadísticas que describen el centro y la dispersión proporcionan formas de examinar la distribución de los valores de una variable. La distribución de una variable describe la probabilidad de que un valor caiga dentro de varios rangos.\
+Si todos los valores tienen la misma probabilidad de ocurrir, digamos, por ejemplo, en un conjunto de datos que registra los valores lanzados en un dado justo de seis caras, se dice que la distribución es uniforme.
+
+![](Captura%20desde%202023-04-23%2015-47-30.png)
+
+## Medición de la dispersión: varianza y desviación estándar
+
+Las distribuciones nos permiten caracterizar una gran cantidad de valores utilizando una\
+menor cantidad de parámetros. La distribución normal, que describe muchos tipos de datos del mundo real, se puede definir con solo dos: centro y dispersión. El centro de la distribución normal se define por su valor medio, que hemos utilizado antes. La propagación se mide mediante una estadística llamadaDesviación Estándar.\
+Para calcular la desviación estándar, primero debemos obtener ladiferencia, que se define\
+como la media de las diferencias al cuadrado entre cada valor y el valor medio. En notación\
+matemática, la varianza de un conjunto de nortevalores de Xse define mediante la siguiente\
+fórmula.
+
+![](Captura%20desde%202023-04-23%2015-45-55.png){fig-alt="Formula"}
+
+La desviación estándar es la raíz cuadrada de la varianza y se denota por\
+sigmacomo se muestra en la siguiente fórmula:
+
+![](desestan.png)
+
+Para obtener la varianza y la desviación estándar en R, elvar()yDakota del Sur()Se pueden utilizar funciones. Por ejemplo, al calcular la varianza y la desviación estándar de nuestras variables de precio y millaje, encontramos:
+
+```{r}
+ var(cochesusados $precio)
+```
+
+```{r}
+ sd(autosusados$precio)
+```
+
+```{r}
+ var(autosusados$kilometraje)
+```
+
+```{r}
+ sd(autosusados$kilometraje)
+```
+
+La desviación estándar se puede usar para estimar rápidamente qué tan extremo es un valor dado bajo el supuesto de que proviene de una distribución normal. Elregla 68-95-99.7 establece que el 68 por ciento de los valores en una distribución normal se encuentran dentro de una desviación estándar de la media, mientras que el 95 por ciento y el 99,7 por ciento de los valores se encuentran dentro de dos y tres desviaciones estándar, respectivamente. Esto se ilustra en el siguiente diagrama:
+
+![](nd.png)
+
+Aplicando esta información a los datos de autos usados, sabemos que dado que la mediaprecio fue de \$12,962, aproximadamente el 68 por ciento de los automóviles en nuestros datos se anunciaron a precios entre \$9,840 y \$16,804. Aunque la regla 68-95-99.7 solo se aplica estrictamente a las distribuciones normales, el principio básico se aplica a cualquier dato; los valores de más de tres desviaciones estándar de la media son eventos extremadamente raros.
+
+## Explorando variables categóricas
+
+Si recuerda, el conjunto de datos de autos usados tenía tres variables categóricas:modelo, color, y transmisión.porque usamos elcadenasAsFactors = FALSOparámetro al cargar los datos, R los ha dejado como caracter (cro)variables en lugar de convertirlas automáticamente en factores. Además, podríamos considerar tratar año como categórico; aunque es como un numérico (En t),el valor de cada año es una categoría que podría aplicarse a varios automóviles.\
+A diferencia de los datos numéricos, los datos categóricos se examinan mediante tablas en lugar de estadísticas de resumen. Una tabla que presenta una sola variable categórica se conoce como tabla unidireccional. El mesa()La función se puede usar para generar tablas unidireccionales para nuestros datos de autos usados:
+
+```{r}
+ tabla(autosusados$año)
+```
+
+```{r}
+ tabla(autosusados$modelo)
+```
+
+```{r}
+ table(usedcars$color)
+```
+
+La salida de la tabla enumera las categorías de la variable nominal y un recuento del número de valores que caen en esa categoría. Dado que sabemos que hay 150 autos usados en el conjunto de datos, podemos determinar que aproximadamente un tercio de todos los autos se fabricaron en 2010, ya que 49/150 es aproximadamente el 33 por ciento.\
+R también puede realizar el cálculo de las proporciones de la tabla directamente usando el\
+prop.tabla()comando en una tabla producida por elmesa()función:
+
+```{r}
+ modelo_tabla <- tabla(autosusados$modelo)
+```
+
+```{r}
+ prop.table(modelo_tabla) SE
+```
+
+Los resultados de laprop.tabla()se puede combinar con otras funciones de R para\
+transformar la salida. Supongamos que nos gustaría mostrar los resultados en porcentajes\
+con un solo decimal. Podemos hacer esto multiplicando las proporciones por100,luego\
+usando elredondo()función al especificardígitos = 1, como se muestra en el siguiente\
+ejemplo:
+
+```{r}
+ tabla_colores <- tabla(autosusados$color)
+```
+
+```{r}
+ color_pct <- prop.table(color_table) * 100
+```
+
+```{r}
+  round(color_pct, digits = 1) Negro
+```
+
+## Medición de la tendencia central: la moda
+
+En términos estadísticos, la moda de una característica es el valor que ocurre con más frecuencia. Al igual que la media y la mediana, la moda es otra medida de tendencia central. A menudo se usa para datos categóricos, ya que la media y la mediana no están definidas para variables nominales.
+
+Pensar en las modas como valores comunes nos permite aplicar el concepto de moda estadística a los datos numéricos. Estrictamente hablando, sería poco probable tener una moda para una variable continua, ya que es probable que no se repitan dos valores. Sin embargo, si pensamos en las modas como las barras más altas de un histograma, podemos analizar las modas de variables como precio y kilometraje.Puede ser útil considerar la moda cuando se exploran datos numéricos, particularmente para examinar si los datos son multimodales o no.
+
+## Explorando relaciones entre variables
+
+Hasta ahora, hemos examinado las variables una a la vez, calculando solounivariado\
+Estadísticas. Durante nuestra investigación, planteamos preguntas que no pudimos\
+responder en ese momento:\
+• ¿Elprecio¿Los datos implican que estamos examinando solo automóviles de clase económica o\
+también hay automóviles de lujo con un alto kilometraje?\
+• Hacer relaciones entre losmodeloycolor¿Los datos proporcionan información sobre los tipos de\
+automóviles que estamos examinando?
+
+## Visualización de relaciones: diagramas de dispersión
+
+Agráfico de dispersiónes un diagrama que visualiza una relación bivariada. Es una figura\
+bidimensional en la que se dibujan puntos en un plano de coordenadas utilizando los valores de una característica para proporcionar la horizontal. X coordenadas, y los valores de otra característica para proporcionar la verticalycoordenadas Los patrones en la ubicación de los puntos revelan asociaciones subyacentes entre las dos características.\
+Para responder a nuestra pregunta sobre la relación entreprecio y kilometraje, examinaremos un diagrama de dispersión. Usaremos eltrama()función, junto con la principal, xlab,y ylab parámetros utilizados en gráficos anteriores para etiquetar el diagrama.
+
+```{r}
+ plot(x = autosusados $kilometraje, y = autosusados $precio,
+main = "Diagrama de dispersión de precio vs. kilometraje",
+xlab = "Odómetro de auto usado (mi.)",
+ylab = "Precio de Auto Usado ($)")
+```
+
+Usando el diagrama de dispersión, notamos una clara relación entre el precio de un auto usado y la lectura del odómetro. Para leer el gráfico, examine cómo los valores de layla variable del eje cambia a medida que los valores en el Xaumento del eje. En este caso, los valores deprecio tienden a ser menores a medida que los valores dekilometrajeaumentar, lo que implica que los precios anunciados son más bajos para los automóviles con mayor millaje. Si alguna vez vendió o compró un automóvil usado, esta no es una idea profunda.
+
+La relación entre precio ykilometraje se conoce como asociación negativa porque forma un patrón de puntos en una línea inclinada hacia abajo. Una asociación positiva parecería formar una línea con pendiente ascendente. Una línea plana, o una dispersión aparentemente aleatoria de puntos, es evidencia de que las dos variables no están asociadas en absoluto. La fuerza de una asociación lineal entre dos variables se mide mediante una estadística conocida comocorrelación. Las correlaciones se discuten en detalle en Capítulo 6, Pronóstico de datos numéricos: métodos de regresión, que cubre el uso de métodos de regresión para modelar relaciones lineales.
+
+## Examen de las relaciones: tabulaciones cruzadas de dos factores
+
+Para responder a nuestra pregunta sobre la relación entremodeloycolor,examinaremos una\
+tabulación cruzada. Hay varias funciones para producir tablas de doble entrada en R,\
+incluyendomesa(),que también usamos para tablas de un solo factor. Eltabla cruzada()\
+función en elgmodelspaquete creado por Gregorio R. Warneses quizás el más fácil de usar\
+porque presenta los porcentajes de fila, columna y margen en una sola tabla, ahorrándonos la molestia de combinar estos datos nosotros mismos. Para instalar el gmodelsTipo de paquete:
+
+```{r}
+ install.packages("gmodels")
+```
+
+Después de que se instale el paquete, simplemente escribabiblioteca (modelos g)para cargar el paquete. Deberá cargar el paquete durante cada sesión de R en la que planee usar el tabla cruzada()función.
+
+```{r}
+ autosusados$conservador <-
+cochesusados $color %in% c("Negro", "Gris", "Plata", "Blanco")
+```
+
+examinando elmesa()resultado de nuestra variable recién creada, vemos que alrededor de\
+dos tercios de los automóviles tienen colores conservadores, mientras que un tercio no los\
+tiene:
+
+```{r}
+ table(autosusados$conservador)
+```
+
+Ahora, veamos una tabulación cruzada para ver cómo la proporción deconservador\
+los coches de colores varían segúnmodelo.Dado que asumimos que el modelo de automóvil\
+dicta la elección del color, trataremosconservadorcomo el dependiente (y)variable. El\
+tabla cruzada()el comando es por lo tanto:
+
+```{r}
+ CrossTable(x = autosusados$modelo, y = autosusados$conservador)
+```
+
+Lo que más nos interesa es la proporción de hileras de autos conservadores para cada modelo. Las proporciones de las filas nos dicen que0,654 (65 por ciento) deSElos coches tienen un color conservador, en comparación con0,696 (70 por ciento) deNSEcoches, y0.653\
+(65 por ciento) deSES.Estas diferencias son relativamente pequeñas, lo que sugiere que no existen diferencias sustanciales en los tipos de colores elegidos por modelo de automóvil.\
+Los valores de Chi-cuadrado se refieren a la contribución de la celda en elPrueba de Chi-cuadrado de Pearson para la independenciaentre dos variables. Esta prueba mide la probabilidad de que la diferencia en los recuentos de celdas en la tabla se deba únicamente al azar. Si la probabilidad es muy baja, proporciona una fuerte evidencia de que las dos variables están asociadas.
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+## 
